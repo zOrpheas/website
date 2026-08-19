@@ -1,0 +1,3173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta name="description"
+      content="zorikos3 — a small corner of the internet at khhv.lol.">
+
+<meta name="theme-color" content="#050507">
+
+<meta property="og:title" content="zorikos3 — khhv.lol">
+<meta property="og:description" content="a small corner of the internet.">
+<meta property="og:type" content="website">
+
+<title>kissless</title>
+
+<link rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23050507'/%3E%3Ctext x='50' y='66' text-anchor='middle' font-family='Arial,sans-serif' font-size='48' font-weight='900' fill='%23ad91ff'%3Ez3%3C/text%3E%3C/svg%3E">
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+  --bg: #050507;
+  --card: rgba(13, 11, 19, .92);
+  --text: #f8f6ff;
+  --muted: #a29cab;
+  --purple: #ad91ff;
+  --line: rgba(255,255,255,.075);
+  --line-strong: rgba(173,145,255,.26);
+
+  --shadow:
+    0 45px 130px rgba(0,0,0,.78);
+
+  --ease:
+    cubic-bezier(.16,1,.3,1);
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(107,76,255,.075),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(76,49,190,.045),
+      transparent 25%
+    ),
+    var(--bg);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(173,145,255,.28);
+  color: white;
+}
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .28;
+
+  animation:
+    orbFloat 13s ease-in-out infinite alternate;
+}
+
+.orb-a {
+  width: 380px;
+  height: 380px;
+  left: -160px;
+  top: 12%;
+  background: rgba(89,59,220,.16);
+}
+
+.orb-b {
+  width: 330px;
+  height: 330px;
+  right: -140px;
+  bottom: 12%;
+  background: rgba(122,82,255,.13);
+  animation-delay: -4s;
+}
+
+.orb-c {
+  width: 220px;
+  height: 220px;
+  left: 50%;
+  top: -130px;
+  transform: translateX(-50%);
+  background: rgba(175,145,255,.09);
+  animation-delay: -8s;
+}
+
+@keyframes orbFloat {
+  from {
+    transform: translate3d(-15px,-10px,0) scale(1);
+  }
+
+  to {
+    transform: translate3d(18px,16px,0) scale(1.08);
+  }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 40%,
+      rgba(0,0,0,.48) 100%
+    );
+}
+
+/* =========================================================
+   NETWORK CANVAS
+========================================================= */
+
+#networkCanvas {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.center {
+  position: relative;
+
+  width:
+    min(410px, calc(100% - 34px));
+
+  margin:
+    50vh auto 0;
+
+  transform:
+    translateY(-50%);
+
+  z-index: 20;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+
+  padding: 23px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(26,22,38,.94),
+      rgba(7,7,11,.97)
+    );
+
+  box-shadow:
+    var(--shadow),
+    0 0 100px rgba(98,66,255,.065),
+    inset 0 1px rgba(255,255,255,.045);
+
+  backdrop-filter:
+    blur(34px)
+    saturate(150%);
+
+  -webkit-backdrop-filter:
+    blur(34px)
+    saturate(150%);
+
+  animation:
+    cardEnter .85s var(--ease) both;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(.965);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+    filter: blur(0);
+  }
+}
+
+.card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180%;
+  height: 120px;
+
+  left: -40%;
+  top: -90px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.045),
+      transparent
+    );
+
+  transform: rotate(-8deg);
+
+  animation:
+    cardShine 8s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+@keyframes cardShine {
+  0%,55% {
+    transform:
+      translateX(-30%)
+      rotate(-8deg);
+  }
+
+  75%,100% {
+    transform:
+      translateX(30%)
+      rotate(-8deg);
+  }
+}
+
+.card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 340px;
+  height: 140px;
+
+  left: 50%;
+  bottom: -120px;
+
+  transform: translateX(-50%);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(112,76,255,.23),
+      transparent 70%
+    );
+
+  filter: blur(24px);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+  margin-bottom: 19px;
+}
+
+.avatar {
+  position: relative;
+
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f5f2ff 0%,
+      #bcaaff 40%,
+      #7654ff 100%
+    );
+
+  color: #08070c;
+
+  font-size: 12px;
+  font-weight: 950;
+
+  letter-spacing: -.08em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 0 28px rgba(135,105,255,.23),
+    inset 0 1px rgba(255,255,255,.9);
+
+  transition:
+    transform .45s var(--ease),
+    box-shadow .45s var(--ease);
+}
+
+.avatar::after {
+  content: "";
+
+  position: absolute;
+  inset: -5px;
+
+  border:
+    1px solid rgba(173,145,255,.16);
+
+  border-radius: 17px;
+
+  opacity: 0;
+
+  transform: scale(.8);
+
+  transition:
+    opacity .35s ease,
+    transform .45s var(--ease);
+}
+
+.avatar:hover {
+  transform:
+    rotate(-5deg)
+    scale(1.08);
+
+  box-shadow:
+    0 0 42px rgba(135,105,255,.4),
+    inset 0 1px rgba(255,255,255,.95);
+}
+
+.avatar:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.avatar:focus-visible {
+  outline:
+    2px solid var(--purple);
+
+  outline-offset: 4px;
+}
+
+.username {
+  font-size: 15px;
+  font-weight: 850;
+  letter-spacing: -.045em;
+}
+
+.domain {
+  margin-top: 2px;
+
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tabs {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  gap: 5px;
+
+  padding: 5px;
+  margin-bottom: 19px;
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255,255,255,.018);
+}
+
+.tab {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 43px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #746f7d;
+
+  font-size: 13px;
+  font-weight: 850;
+
+  letter-spacing: .025em;
+
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    transform .25s var(--ease);
+}
+
+.tab::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(173,145,255,.13),
+      rgba(173,145,255,.025)
+    );
+
+  opacity: 0;
+
+  transform: scale(.92);
+
+  transition:
+    opacity .3s ease,
+    transform .3s var(--ease);
+}
+
+.tab:hover {
+  color: white;
+}
+
+.tab:hover::before,
+.tab.active::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tab.active {
+  color: white;
+}
+
+.tab:active {
+  transform: scale(.94);
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel {
+  display: none;
+  min-height: 180px;
+}
+
+.panel.active {
+  display: block;
+
+  animation:
+    panelEnter .42s var(--ease) both;
+}
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(8px)
+      scale(.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.title {
+  margin: 0 0 11px;
+
+  font-size:
+    clamp(27px, 6vw, 33px);
+
+  line-height: .98;
+
+  font-weight: 880;
+
+  letter-spacing: -.075em;
+}
+
+.description {
+  margin: 0;
+
+  color: #aaa5b2;
+
+  font-size: 12px;
+  line-height: 1.82;
+}
+
+.editable {
+  margin-top: 17px;
+
+  padding: 13px;
+
+  border:
+    1px dashed rgba(255,255,255,.095);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255,255,255,.014);
+
+  color: #817c89;
+
+  font-size: 10px;
+  line-height: 1.7;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    color .25s ease;
+}
+
+.editable:hover {
+  color: #a49ead;
+
+  border-color:
+    rgba(173,145,255,.18);
+
+  background:
+    rgba(173,145,255,.025);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 15px;
+  padding-top: 13px;
+
+  border-top:
+    1px solid rgba(255,255,255,.05);
+
+  color: #514d58;
+
+  font-size: 8px;
+}
+
+.footer a {
+  color: #6e6877;
+  text-decoration: none;
+
+  transition:
+    color .2s ease;
+}
+
+.footer a:hover {
+  color: var(--purple);
+}
+
+/* =========================================================
+   SOCIALS
+========================================================= */
+
+.social-world {
+  position: fixed;
+  inset: 0;
+
+  z-index: 10;
+
+  pointer-events: none;
+}
+
+.social {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 106px;
+
+  padding: 10px 13px;
+
+  border:
+    1px solid rgba(255,255,255,.075);
+
+  border-radius: 12px;
+
+  background:
+    rgba(8,7,13,.82);
+
+  color: #e9e5f1;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  white-space: nowrap;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(150%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(150%);
+
+  box-shadow:
+    0 18px 48px rgba(0,0,0,.38),
+    inset 0 1px rgba(255,255,255,.025);
+
+  pointer-events: auto;
+
+  transform:
+    translate(-50%, -50%);
+
+  transition:
+    left .85s var(--ease),
+    top .85s var(--ease),
+    transform .4s var(--ease),
+    opacity .3s ease,
+    box-shadow .3s ease,
+    border-color .3s ease,
+    background .3s ease;
+
+  animation:
+    socialFloat 4s ease-in-out infinite alternate;
+}
+
+.social:nth-child(2) {
+  animation-delay: -1.2s;
+}
+
+.social:nth-child(3) {
+  animation-delay: -2.1s;
+}
+
+.social:nth-child(4) {
+  animation-delay: -3s;
+}
+
+.social:nth-child(5) {
+  animation-delay: -.6s;
+}
+
+.social::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  flex: 0 0 5px;
+
+  margin-right: 7px;
+
+  border-radius: 50%;
+
+  background: var(--purple);
+
+  box-shadow:
+    0 0 13px rgba(173,145,255,.9);
+}
+
+.social::after {
+  content: "";
+
+  position: absolute;
+  inset: -1px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 20%,
+      rgba(255,255,255,.07),
+      transparent 80%
+    );
+
+  opacity: 0;
+
+  transform: translateX(-30%);
+
+  transition:
+    opacity .3s ease,
+    transform .5s var(--ease);
+
+  pointer-events: none;
+}
+
+.social:hover {
+  border-color:
+    rgba(173,145,255,.28);
+
+  background:
+    rgba(17,14,27,.95);
+
+  box-shadow:
+    0 0 32px rgba(110,76,255,.14),
+    0 20px 55px rgba(0,0,0,.48);
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.075);
+}
+
+.social:hover::after {
+  opacity: 1;
+  transform: translateX(30%);
+}
+
+@keyframes socialFloat {
+  from {
+    margin-top: -3px;
+  }
+
+  to {
+    margin-top: 3px;
+  }
+}
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.mobile-menu-button {
+  display: none;
+
+  position: fixed;
+
+  top:
+    max(16px, env(safe-area-inset-top));
+
+  right: 16px;
+
+  z-index: 80;
+
+  width: 42px;
+  height: 42px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 12px;
+
+  background:
+    rgba(9,8,15,.83);
+
+  color: white;
+
+  cursor: pointer;
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.42);
+
+  transition:
+    transform .3s var(--ease),
+    border-color .25s ease;
+}
+
+.mobile-menu-button:hover {
+  transform: scale(1.05);
+
+  border-color:
+    var(--line-strong);
+}
+
+.mobile-menu-button span {
+  display: block;
+
+  width: 15px;
+  height: 1.5px;
+
+  margin: 4px auto;
+
+  background: #aaa5b2;
+
+  transition:
+    transform .3s var(--ease),
+    opacity .2s ease;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+
+  z-index: 70;
+
+  display: none;
+
+  padding:
+    72px 17px 17px;
+
+  background:
+    rgba(3,3,7,.72);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+}
+
+.mobile-menu.open {
+  display: block;
+
+  animation:
+    menuFade .3s ease both;
+}
+
+@keyframes menuFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobile-menu-inner {
+  width: 100%;
+  max-width: 410px;
+
+  margin: 0 auto;
+
+  padding: 10px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 18px;
+
+  background:
+    rgba(12,10,18,.96);
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.72);
+
+  animation:
+    menuCard .4s var(--ease) both;
+}
+
+@keyframes menuCard {
+  from {
+    opacity: 0;
+    transform:
+      translateY(-8px)
+      scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.mobile-menu-item {
+  width: 100%;
+
+  padding: 14px 12px;
+
+  border: 0;
+  border-bottom:
+    1px solid rgba(255,255,255,.05);
+
+  background: transparent;
+
+  color: #a49eac;
+
+  text-align: left;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    color .2s ease,
+    padding-left .25s var(--ease);
+}
+
+.mobile-menu-item:last-child {
+  border-bottom: 0;
+}
+
+.mobile-menu-item:hover {
+  padding-left: 16px;
+  color: white;
+}
+
+/* =========================================================
+   TOASTS
+========================================================= */
+
+.toast-container {
+  position: fixed;
+
+  left: 50%;
+
+  bottom:
+    max(18px, env(safe-area-inset-bottom));
+
+  transform:
+    translateX(-50%);
+
+  z-index: 500;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width:
+    min(90vw, 340px);
+
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+
+  padding: 10px 14px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(12,10,18,.95);
+
+  color: #d8d2e2;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  box-shadow:
+    0 14px 45px rgba(0,0,0,.55);
+
+  backdrop-filter:
+    blur(18px);
+
+  animation:
+    toastIn .24s var(--ease) both;
+
+  overflow: hidden;
+}
+
+.toast::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--purple),
+      transparent
+    );
+
+  animation:
+    toastProgress 3s linear both;
+}
+
+.toast.error {
+  border-color:
+    rgba(255,105,120,.2);
+}
+
+.toast.error::after {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,105,120,.8),
+      transparent
+    );
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(8px)
+      scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes toastProgress {
+  from {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  to {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
+/* =========================================================
+   FULLSCREEN PAGES
+========================================================= */
+
+.fullscreen-page {
+  position: fixed;
+  inset: 0;
+
+  z-index: 300;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  overflow-y: auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(104,70,255,.09),
+      transparent 36%
+    ),
+    #050507;
+
+  animation:
+    pageIn .35s var(--ease) both;
+}
+
+.fullscreen-page.visible {
+  display: flex;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-card {
+  width:
+    min(430px, 100%);
+
+  padding: 30px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,21,38,.96),
+      rgba(7,7,11,.98)
+    );
+
+  box-shadow:
+    0 45px 140px rgba(0,0,0,.8),
+    0 0 100px rgba(100,70,255,.07);
+
+  animation:
+    pageCardIn .5s var(--ease) both;
+}
+
+@keyframes pageCardIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(15px)
+      scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.page-tag {
+  display: inline-block;
+
+  margin-bottom: 16px;
+
+  padding: 5px 8px;
+
+  border:
+    1px solid rgba(173,145,255,.16);
+
+  border-radius: 7px;
+
+  color: var(--purple);
+
+  background:
+    rgba(173,145,255,.055);
+
+  font-size: 8px;
+  font-weight: 850;
+
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  margin: 0 0 12px;
+
+  font-size:
+    clamp(25px, 6vw, 32px);
+
+  line-height: 1;
+
+  font-weight: 880;
+
+  letter-spacing: -.065em;
+}
+
+.page-text {
+  margin: 0;
+
+  color: #a5a0ad;
+
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.password-box {
+  margin-top: 22px;
+
+  padding: 16px;
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  border-radius: 12px;
+
+  background:
+    rgba(0,0,0,.22);
+
+  text-align: center;
+}
+
+.password {
+  display: inline-block;
+
+  color: #d9d3e5;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: 12px;
+
+  letter-spacing: .08em;
+
+  filter: blur(7px);
+
+  user-select: none;
+}
+
+.page-button {
+  width: 100%;
+
+  margin-top: 16px;
+
+  padding: 11px;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color: #aaa4b1;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    color .2s ease,
+    background .25s ease,
+    border-color .25s ease,
+    transform .25s var(--ease);
+}
+
+.page-button:hover {
+  color: white;
+
+  background:
+    rgba(173,145,255,.08);
+
+  border-color:
+    rgba(173,145,255,.2);
+
+  transform:
+    translateY(-1px);
+}
+
+.page-button:active {
+  transform: scale(.98);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .social-world {
+    display: none;
+  }
+
+  .center {
+    width:
+      calc(100% - 24px);
+
+    margin:
+      50dvh auto 30px;
+
+    transform:
+      translateY(-50%);
+  }
+
+  .card {
+    padding: 19px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 27px;
+  }
+
+  .panel {
+    min-height: 168px;
+  }
+
+  .orb-a {
+    width: 280px;
+    height: 280px;
+  }
+
+  .orb-b {
+    width: 240px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 390px) {
+
+  .center {
+    width:
+      calc(100% - 18px);
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .tabs {
+    gap: 3px;
+    padding: 4px;
+  }
+
+  .tab {
+    min-height: 39px;
+    font-size: 11px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="ambient">
+  <div class="ambient-orb orb-a"></div>
+  <div class="ambient-orb orb-b"></div>
+  <div class="ambient-orb orb-c"></div>
+</div>
+
+<canvas id="networkCanvas"></canvas>
+
+<div class="vignette"></div>
+
+
+<!-- =======================================================
+     MOBILE MENU
+======================================================= -->
+
+<button
+  class="mobile-menu-button"
+  id="mobileMenuButton"
+  aria-label="Open menu"
+  aria-expanded="false"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div
+  class="mobile-menu"
+  id="mobileMenu"
+>
+  <div class="mobile-menu-inner">
+
+    <button
+      class="mobile-menu-item"
+      data-mobile-panel="bio"
+    >
+      bio.
+    </button>
+
+    <button
+      class="mobile-menu-item"
+      data-mobile-panel="why"
+    >
+      why?
+    </button>
+
+    <button
+      class="mobile-menu-item"
+      id="mobileUi"
+    >
+      switch UI
+    </button>
+
+    <button
+      class="mobile-menu-item"
+      id="mobileClose"
+    >
+      close
+    </button>
+
+  </div>
+</div>
+
+
+<!-- =======================================================
+     SOCIALS
+======================================================= -->
+
+<div
+  class="social-world"
+  id="socialWorld"
+>
+
+  <a
+    class="social"
+    href="https://discord.com/users/1261229072508522496"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Discord
+  </a>
+
+  <a
+    class="social"
+    href="https://github.com/zOrpheas"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    GitHub
+  </a>
+
+  <a
+    class="social"
+    href="https://github.com/zOrpheas/khhv-client"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    khhv client
+  </a>
+
+  <a
+    class="social"
+    href="waterv5.zip"
+    download
+    id="dllLink"
+  >
+    water v5 src
+  </a>
+
+  <a
+    class="social"
+    href="https://x.com/noobwastaken4/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    X
+  </a>
+
+</div>
+
+
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
+<main
+  class="center"
+  id="mainContent"
+>
+
+  <section class="card">
+
+    <div class="profile">
+
+      <div
+        class="avatar"
+        id="secretTrigger"
+        tabindex="0"
+        role="button"
+        aria-label="Open secret"
+      >
+        z3
+      </div>
+
+      <div>
+
+        <div class="username">
+          zorikos3
+        </div>
+
+        <div class="domain">
+          khhv.lol
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <nav
+      class="tabs"
+      aria-label="Main navigation"
+    >
+
+      <button
+        class="tab active"
+        data-panel="bio"
+      >
+        bio.
+      </button>
+
+      <button
+        class="tab"
+        data-panel="why"
+      >
+        why?
+      </button>
+
+      <button
+        class="tab"
+        id="uiToggle"
+      >
+        UI
+      </button>
+
+    </nav>
+
+
+    <section
+      class="panel active"
+      id="bio"
+    >
+
+      <h1 class="title">
+        hey, i'm zorikos3.
+      </h1>
+
+      <p class="description">
+        Welcome to my little corner
+        of the internet.
+        <br>
+        Everything here is mine.
+      </p>
+
+      <div class="editable">
+        I am a young programmer learning about cybersecurity and AI, I currently know python and lua and I'm willing to learn more. Right now I am tinkering with local AI and local AI image generation, I am saving a little money tho to see whats the hype behind claude code!
+      </div>
+
+    </section>
+
+
+    <section
+      class="panel"
+      id="why"
+    >
+
+      <h1 class="title">
+        why?
+      </h1>
+
+      <p class="description">
+        Because having your own
+        little corner of the internet
+        is cool.
+        <br><br>
+        No algorithm. No nothing.
+        Just khhv.lol.
+      </p>
+
+      <div class="editable">
+        I made this site to get all my socials somewhere together and learn about domains thats why I chose khhv.lol, .lol is a cheap domain extension and khhv is a phrase from an old community I was in that meant kissless handholdesness hugless virgin. I just used it for fun lol! Also "water v5" downloads the source code of a miencraft hacked client, dont mind it!
+      </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+      <span>
+        © <span id="year"></span>
+        zorikos3
+      </span>
+
+      <a
+        href="https://khhv.lol/"
+        id="homeLink"
+      >
+        khhv.lol
+      </a>
+
+    </footer>
+
+  </section>
+
+</main>
+
+
+<!-- =======================================================
+     SECRET PAGE
+======================================================= -->
+
+<section
+  class="fullscreen-page"
+  id="secretPage"
+  aria-hidden="true"
+>
+
+  <div class="page-card">
+
+    <div class="page-tag">
+      secret unlocked
+    </div>
+
+    <h1 class="page-title">
+      oooo you found my secret
+    </h1>
+
+    <p class="page-text">
+      Fine.
+      <br><br>
+      Here is my BTC wallet password:
+    </p>
+
+    <div class="password-box">
+      <span class="password">
+        -----NOT-A-REAL-PASSWORD-----
+      </span>
+    </div>
+
+    <button
+      class="page-button"
+      id="secretBack"
+    >
+      go back
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     404 PAGE
+======================================================= -->
+
+<section
+  class="fullscreen-page"
+  id="notFoundPage"
+  aria-hidden="true"
+>
+
+  <div class="page-card">
+
+    <div class="page-tag">
+      error 404
+    </div>
+
+    <h1 class="page-title">
+      page not found.
+    </h1>
+
+    <p class="page-text">
+      Whatever you were looking for
+      isn't here.
+      <br><br>
+      Maybe you took a wrong turn.
+    </p>
+
+    <button
+      class="page-button"
+      id="notFoundBack"
+    >
+      return home
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div
+  class="toast-container"
+  id="toastContainer"
+  aria-live="polite"
+></div>
+
+
+<script>
+
+/* =========================================================
+   TITLE ROTATION
+========================================================= */
+
+const titles = [
+  "kissless",
+  "handholdesness",
+  "hugless",
+  "virgin"
+];
+
+let titleIndex = 0;
+
+function rotateTitle() {
+
+  document.title =
+    titles[titleIndex];
+
+  titleIndex =
+    (titleIndex + 1) %
+    titles.length;
+}
+
+rotateTitle();
+
+setInterval(
+  rotateTitle,
+  1000
+);
+
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+document.getElementById(
+  "year"
+).textContent =
+  new Date().getFullYear();
+
+
+/* =========================================================
+   TOAST SYSTEM
+========================================================= */
+
+const toastContainer =
+  document.getElementById(
+    "toastContainer"
+  );
+
+let toastTimer = null;
+
+function showToast(
+  message,
+  type = "success",
+  duration = 3000
+) {
+
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+  }
+
+  toastContainer.innerHTML = "";
+
+  const toast =
+    document.createElement(
+      "div"
+    );
+
+  toast.className =
+    `toast ${type}`;
+
+  toast.textContent =
+    message;
+
+  toastContainer.appendChild(
+    toast
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.style.opacity =
+          "0";
+
+        toast.style.transform =
+          "translateY(7px) scale(.97)";
+
+        setTimeout(
+          () => {
+
+            if (
+              toast.parentNode
+            ) {
+              toast.remove();
+            }
+
+          },
+          180
+        );
+
+      },
+      duration
+    );
+}
+
+
+/* =========================================================
+   ANTI-SKID / SHORTCUT DETERRENT
+========================================================= */
+
+/*
+  IMPORTANT:
+
+  This is only a deterrent.
+
+  A webpage cannot genuinely prevent
+  someone from obtaining its source code,
+  because the browser must receive the
+  source in order to render the page.
+
+  These handlers only stop casual
+  keyboard/context-menu attempts.
+*/
+
+function noSkidding() {
+
+  showToast(
+    "no skidding buddy",
+    "error",
+    3000
+  );
+
+}
+
+
+/* Right click */
+
+document.addEventListener(
+  "contextmenu",
+  function(event) {
+
+    event.preventDefault();
+
+    noSkidding();
+
+  }
+);
+
+
+/* Keyboard shortcuts */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    const key =
+      event.key.toLowerCase();
+
+    const ctrlOrCmd =
+      event.ctrlKey ||
+      event.metaKey;
+
+    const blocked =
+      (
+        key === "f12"
+      ) ||
+
+      (
+        ctrlOrCmd &&
+        event.shiftKey &&
+        (
+          key === "i" ||
+          key === "j" ||
+          key === "c"
+        )
+      ) ||
+
+      (
+        ctrlOrCmd &&
+        key === "u"
+      ) ||
+
+      (
+        ctrlOrCmd &&
+        event.shiftKey &&
+        key === "k"
+      );
+
+    if (blocked) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      noSkidding();
+
+      return false;
+    }
+
+  },
+  true
+);
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+const tabs =
+  document.querySelectorAll(
+    ".tab[data-panel]"
+  );
+
+const panels =
+  document.querySelectorAll(
+    ".panel"
+  );
+
+
+function activatePanel(
+  name
+) {
+
+  const target =
+    document.getElementById(
+      name
+    );
+
+  if (!target) {
+
+    showToast(
+      "section unavailable.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  tabs.forEach(
+    tab => {
+
+      tab.classList.toggle(
+        "active",
+        tab.dataset.panel === name
+      );
+
+    }
+  );
+
+  panels.forEach(
+    panel => {
+
+      panel.classList.toggle(
+        "active",
+        panel.id === name
+      );
+
+    }
+  );
+
+}
+
+
+tabs.forEach(
+  tab => {
+
+    tab.addEventListener(
+      "click",
+      () => {
+
+        activatePanel(
+          tab.dataset.panel
+        );
+
+        closeMobileMenu();
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   UI MODE
+========================================================= */
+
+let stackedMode =
+  localStorage.getItem(
+    "khhv-ui"
+  ) === "stacked";
+
+
+function toggleUI() {
+
+  stackedMode =
+    !stackedMode;
+
+  localStorage.setItem(
+    "khhv-ui",
+    stackedMode
+      ? "stacked"
+      : "network"
+  );
+
+  positionSocials();
+
+  showToast(
+    stackedMode
+      ? "stacked mode."
+      : "network mode.",
+    "success",
+    1000
+  );
+
+}
+
+
+document.getElementById(
+  "uiToggle"
+).addEventListener(
+  "click",
+  toggleUI
+);
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const mobileMenu =
+  document.getElementById(
+    "mobileMenu"
+  );
+
+const mobileMenuButton =
+  document.getElementById(
+    "mobileMenuButton"
+  );
+
+
+function openMobileMenu() {
+
+  mobileMenu.classList.add(
+    "open"
+  );
+
+  mobileMenuButton.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+
+}
+
+
+function closeMobileMenu() {
+
+  mobileMenu.classList.remove(
+    "open"
+  );
+
+  mobileMenuButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+}
+
+
+mobileMenuButton.addEventListener(
+  "click",
+  () => {
+
+    if (
+      mobileMenu.classList.contains(
+        "open"
+      )
+    ) {
+
+      closeMobileMenu();
+
+    } else {
+
+      openMobileMenu();
+
+    }
+
+  }
+);
+
+
+mobileMenu.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target === mobileMenu
+    ) {
+
+      closeMobileMenu();
+
+    }
+
+  }
+);
+
+
+document
+  .querySelectorAll(
+    "[data-mobile-panel]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activatePanel(
+            button.dataset.mobilePanel
+          );
+
+          closeMobileMenu();
+
+        }
+      );
+
+    }
+  );
+
+
+document.getElementById(
+  "mobileUi"
+).addEventListener(
+  "click",
+  () => {
+
+    toggleUI();
+    closeMobileMenu();
+
+  }
+);
+
+
+document.getElementById(
+  "mobileClose"
+).addEventListener(
+  "click",
+  closeMobileMenu
+);
+
+
+/* =========================================================
+   SECRET PAGE
+========================================================= */
+
+const secretTrigger =
+  document.getElementById(
+    "secretTrigger"
+  );
+
+const secretPage =
+  document.getElementById(
+    "secretPage"
+  );
+
+const secretBack =
+  document.getElementById(
+    "secretBack"
+  );
+
+
+function openSecret() {
+
+  closeMobileMenu();
+
+  secretPage.classList.add(
+    "visible"
+  );
+
+  secretPage.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  history.pushState(
+    {
+      page: "secret"
+    },
+    "",
+    "#secret"
+  );
+
+  document.title =
+    "secret — khhv.lol";
+
+}
+
+
+function closeSecret(
+  cleanUrl = true
+) {
+
+  secretPage.classList.remove(
+    "visible"
+  );
+
+  secretPage.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  if (
+    cleanUrl &&
+    location.hash === "#secret"
+  ) {
+
+    history.pushState(
+      {},
+      "",
+      location.pathname +
+      location.search
+    );
+
+  }
+
+}
+
+
+secretTrigger.addEventListener(
+  "click",
+  openSecret
+);
+
+
+secretTrigger.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+
+      event.preventDefault();
+
+      openSecret();
+
+    }
+
+  }
+);
+
+
+secretBack.addEventListener(
+  "click",
+  () => {
+
+    closeSecret();
+
+    showToast(
+      "back to the main page.",
+      "success",
+      1000
+    );
+
+  }
+);
+
+
+/* =========================================================
+   404
+========================================================= */
+
+const notFoundPage =
+  document.getElementById(
+    "notFoundPage"
+  );
+
+
+function open404() {
+
+  notFoundPage.classList.add(
+    "visible"
+  );
+
+  notFoundPage.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.title =
+    "404 — khhv.lol";
+
+}
+
+
+function close404() {
+
+  notFoundPage.classList.remove(
+    "visible"
+  );
+
+  notFoundPage.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+document.getElementById(
+  "notFoundBack"
+).addEventListener(
+  "click",
+  () => {
+
+    history.pushState(
+      {},
+      "",
+      location.pathname
+    );
+
+    close404();
+
+    showToast(
+      "welcome back.",
+      "success",
+      1000
+    );
+
+  }
+);
+
+
+/* =========================================================
+   ROUTING
+========================================================= */
+
+function handleRoute() {
+
+  const hash =
+    location.hash;
+
+  if (
+    hash === "#secret"
+  ) {
+
+    secretPage.classList.add(
+      "visible"
+    );
+
+    secretPage.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    notFoundPage.classList.remove(
+      "visible"
+    );
+
+    document.title =
+      "secret — khhv.lol";
+
+    return;
+
+  }
+
+  if (
+    hash &&
+    hash !== "#home"
+  ) {
+
+    secretPage.classList.remove(
+      "visible"
+    );
+
+    open404();
+
+    return;
+
+  }
+
+  secretPage.classList.remove(
+    "visible"
+  );
+
+  notFoundPage.classList.remove(
+    "visible"
+  );
+
+}
+
+
+window.addEventListener(
+  "popstate",
+  handleRoute
+);
+
+window.addEventListener(
+  "hashchange",
+  handleRoute
+);
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+document.getElementById(
+  "homeLink"
+).addEventListener(
+  "click",
+  event => {
+
+    event.preventDefault();
+
+    history.pushState(
+      {},
+      "",
+      location.pathname
+    );
+
+    closeSecret(false);
+    close404();
+
+    showToast(
+      "already home.",
+      "success",
+      1000
+    );
+
+  }
+);
+
+
+/* =========================================================
+   DLL
+========================================================= */
+
+document.getElementById(
+  "dllLink"
+).addEventListener(
+  "click",
+  () => {
+
+    showToast(
+      "downloading dll.exe...",
+      "success",
+      1000
+    );
+
+  }
+);
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+const canvas =
+  document.getElementById(
+    "networkCanvas"
+  );
+
+const ctx =
+  canvas.getContext("2d");
+
+let width = 0;
+let height = 0;
+
+
+function resizeCanvas() {
+
+  width =
+    window.innerWidth;
+
+  height =
+    window.innerHeight;
+
+  const ratio =
+    Math.min(
+      window.devicePixelRatio || 1,
+      2
+    );
+
+  canvas.width =
+    width * ratio;
+
+  canvas.height =
+    height * ratio;
+
+  canvas.style.width =
+    `${width}px`;
+
+  canvas.style.height =
+    `${height}px`;
+
+  ctx.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+}
+
+
+resizeCanvas();
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    resizeCanvas();
+    createNodes();
+    positionSocials();
+
+  }
+);
+
+
+/* =========================================================
+   MOUSE
+========================================================= */
+
+const mouse = {
+  x: -1000,
+  y: -1000
+};
+
+
+window.addEventListener(
+  "mousemove",
+  event => {
+
+    mouse.x =
+      event.clientX;
+
+    mouse.y =
+      event.clientY;
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+window.addEventListener(
+  "mouseleave",
+  () => {
+
+    mouse.x = -1000;
+    mouse.y = -1000;
+
+  }
+);
+
+
+/* =========================================================
+   NETWORK NODES
+========================================================= */
+
+let nodes = [];
+
+
+function createNodes() {
+
+  nodes = [];
+
+  const amount =
+    width < 700
+      ? 28
+      : 76;
+
+  for (
+    let i = 0;
+    i < amount;
+    i++
+  ) {
+
+    nodes.push({
+
+      x:
+        Math.random() * width,
+
+      y:
+        Math.random() * height,
+
+      vx:
+        (
+          Math.random() - .5
+        ) * .17,
+
+      vy:
+        (
+          Math.random() - .5
+        ) * .17,
+
+      size:
+        .6 +
+        Math.random() * 1.35,
+
+      phase:
+        Math.random() *
+        Math.PI *
+        2
+
+    });
+
+  }
+
+}
+
+
+createNodes();
+
+
+function renderNetwork() {
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  const connectionDistance =
+    stackedMode
+      ? 105
+      : 145;
+
+
+  for (
+    const node of nodes
+  ) {
+
+    node.x += node.vx;
+    node.y += node.vy;
+
+    node.phase += .012;
+
+
+    if (node.x < -25)
+      node.x = width + 25;
+
+    if (node.x > width + 25)
+      node.x = -25;
+
+    if (node.y < -25)
+      node.y = height + 25;
+
+    if (node.y > height + 25)
+      node.y = -25;
+
+
+    const dx =
+      mouse.x - node.x;
+
+    const dy =
+      mouse.y - node.y;
+
+    const distance =
+      Math.sqrt(
+        dx * dx +
+        dy * dy
+      );
+
+    if (
+      distance < 180 &&
+      distance > 1
+    ) {
+
+      node.x +=
+        (dx / distance) * .07;
+
+      node.y +=
+        (dy / distance) * .07;
+
+    }
+
+  }
+
+
+  for (
+    let i = 0;
+    i < nodes.length;
+    i++
+  ) {
+
+    for (
+      let j = i + 1;
+      j < nodes.length;
+      j++
+    ) {
+
+      const a =
+        nodes[i];
+
+      const b =
+        nodes[j];
+
+      const dx =
+        a.x - b.x;
+
+      const dy =
+        a.y - b.y;
+
+      const distance =
+        Math.sqrt(
+          dx * dx +
+          dy * dy
+        );
+
+      if (
+        distance <
+        connectionDistance
+      ) {
+
+        const opacity =
+          (
+            1 -
+            distance /
+            connectionDistance
+          ) *
+          (
+            stackedMode
+              ? .075
+              : .19
+          );
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          a.x,
+          a.y
+        );
+
+        ctx.lineTo(
+          b.x,
+          b.y
+        );
+
+        ctx.strokeStyle =
+          `rgba(160,130,255,${opacity})`;
+
+        ctx.lineWidth =
+          .65;
+
+        ctx.stroke();
+
+      }
+
+    }
+
+  }
+
+
+  for (
+    const node of nodes
+  ) {
+
+    const pulse =
+      Math.sin(
+        node.phase
+      ) * .3;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      node.x,
+      node.y,
+      node.size + pulse,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      stackedMode
+        ? "rgba(160,130,255,.25)"
+        : "rgba(170,140,255,.62)";
+
+    ctx.shadowBlur =
+      stackedMode ? 2 : 9;
+
+    ctx.shadowColor =
+      "rgba(125,85,255,.7)";
+
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+  }
+
+
+  requestAnimationFrame(
+    renderNetwork
+  );
+
+}
+
+
+renderNetwork();
+
+
+/* =========================================================
+   SOCIAL POSITIONING
+========================================================= */
+
+const socials =
+  Array.from(
+    document.querySelectorAll(
+      ".social"
+    )
+  );
+
+
+function positionSocials() {
+
+  if (width <= 700) {
+
+    socials.forEach(
+      social => {
+
+        social.style.opacity =
+          "0";
+
+        social.style.pointerEvents =
+          "none";
+
+      }
+    );
+
+    return;
+  }
+
+
+  if (stackedMode) {
+
+    positionStacked();
+
+  } else {
+
+    positionNetworkSocials();
+
+  }
+
+}
+
+
+function positionNetworkSocials() {
+
+  /*
+    Socials are intentionally confined
+    to outer screen regions.
+
+    The center card occupies the middle.
+    Nothing is positioned there.
+  */
+
+  const pockets = [
+
+    {
+      x: 7 + Math.random() * 5,
+      y: 18 + Math.random() * 12
+    },
+
+    {
+      x: 93 - Math.random() * 5,
+      y: 18 + Math.random() * 12
+    },
+
+    {
+      x: 7 + Math.random() * 5,
+      y: 82 - Math.random() * 12
+    },
+
+    {
+      x: 93 - Math.random() * 5,
+      y: 82 - Math.random() * 12
+    },
+
+    {
+      x: 50,
+      y: 6 + Math.random() * 3
+    }
+
+  ];
+
+
+  for (
+    let i = pockets.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+    [
+      pockets[i],
+      pockets[j]
+    ] =
+    [
+      pockets[j],
+      pockets[i]
+    ];
+
+  }
+
+
+  socials.forEach(
+    (social, index) => {
+
+      const pocket =
+        pockets[index];
+
+      social.style.opacity =
+        "1";
+
+      social.style.pointerEvents =
+        "auto";
+
+      social.style.left =
+        `${pocket.x}%`;
+
+      social.style.top =
+        `${pocket.y}%`;
+
+      social.style.transform =
+        "translate(-50%, -50%)";
+
+    }
+  );
+
+}
+
+
+function positionStacked() {
+
+  /*
+    Stacked UI gets its own right-side
+    column, still outside the card.
+  */
+
+  const safeX =
+    width < 950
+      ? 88
+      : 89;
+
+  const startY =
+    28;
+
+  const gap =
+    10;
+
+
+  socials.forEach(
+    (social, index) => {
+
+      social.style.opacity =
+        "1";
+
+      social.style.pointerEvents =
+        "auto";
+
+      social.style.left =
+        `${safeX}%`;
+
+      social.style.top =
+        `${startY + index * gap}%`;
+
+      social.style.transform =
+        "translate(-50%, -50%)";
+
+    }
+  );
+
+}
+
+
+positionSocials();
+
+
+/* =========================================================
+   DOUBLE CLICK
+========================================================= */
+
+document.addEventListener(
+  "dblclick",
+  event => {
+
+    if (
+      event.target === document.body ||
+      event.target === canvas
+    ) {
+
+      if (!stackedMode) {
+
+        positionNetworkSocials();
+
+        showToast(
+          "network rearranged.",
+          "success",
+          1000
+        );
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeMobileMenu();
+      closeSecret();
+      close404();
+
+    }
+
+
+    if (
+      event.key.toLowerCase() === "u"
+    ) {
+
+      const active =
+        document.activeElement;
+
+      const typing =
+        active &&
+        (
+          active.tagName === "INPUT" ||
+          active.tagName === "TEXTAREA"
+        );
+
+      if (!typing) {
+
+        toggleUI();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIAL ROUTE
+========================================================= */
+
+handleRoute();
+
+
+/* =========================================================
+   ORIENTATION
+========================================================= */
+
+window.addEventListener(
+  "orientationchange",
+  () => {
+
+    setTimeout(
+      () => {
+
+        resizeCanvas();
+        createNodes();
+        positionSocials();
+
+      },
+      150
+    );
+
+  }
+);
+
+</script>
+
+</body>
+</html>
